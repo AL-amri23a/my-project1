@@ -37,18 +37,16 @@ if (isset($_POST['requestOTP'])) {
             $mail->Body = "رمز التحقق الخاص بك هو: <b>$otp</b> (صالح لمدة 5 دقائق)";
             $mail->send();
 
-            $message = "✅ تم إرسال رمز التحقق إلى بريدك الإلكتروني.";
+            $message = " تم إرسال رمز التحقق إلى بريدك الإلكتروني.";
             $_SESSION['step'] = 2;
             $_SESSION['last_otp_time'] = time();
         } catch (Exception $e) {
-            $message = "❌ فشل في إرسال البريد: {$mail->ErrorInfo}";
+            $message = " فشل في إرسال البريد: {$mail->ErrorInfo}";
         }
     } else {
-        $message = "⚠️ يرجى إدخال البريد الإلكتروني.";
+        $message = " يرجى إدخال البريد الإلكتروني.";
     }
 }
-
-// ====== التحقق من OTP ======
 if (isset($_POST['verifyOTP'])) {
     $otp = trim($_POST['otp']);
     $email = $_SESSION['email'] ?? "";
@@ -87,7 +85,6 @@ if (isset($_POST['resetPassword'])) {
   <h2 class="mb-4">نسيت كلمة المرور</h2>
   <div class="alert alert-info"><?= $message ?></div>
 
-  <!-- الخطوة 1: إدخال البريد -->
   <?php if ($_SESSION['step'] == 1): ?>
   <form method="POST">
     <input type="email" name="email" class="form-control mb-3" placeholder="أدخل بريدك" required>

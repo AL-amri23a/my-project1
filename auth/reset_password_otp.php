@@ -3,16 +3,12 @@ session_start();
 include("config/connect.php");
 
 $message = '';
-
-// تأكد أن المستخدم جاء من forgot_password.php
 if(!isset($_SESSION['reset_user_id'])){
     header("Location: forgot_password.php");
     exit();
 }
 
 $user_id = intval($_SESSION['reset_user_id']);
-
-// --- مرحلة التحقق من OTP ---
 if(!isset($_SESSION['otp_verified'])){
     if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])){
         $otp = trim($_POST['otp']);
@@ -38,8 +34,6 @@ if(!isset($_SESSION['otp_verified'])){
         }
     }
 }
-
-// --- مرحلة تغيير كلمة المرور بعد التحقق من OTP ---
 if(isset($_SESSION['otp_verified']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['new_password'])){
     $new_password = trim($_POST['new_password']);
     $confirm_password = trim($_POST['confirm_password']);
@@ -53,13 +47,11 @@ if(isset($_SESSION['otp_verified']) && $_SERVER['REQUEST_METHOD'] === 'POST' && 
         $upd = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
         $upd->bind_param("si", $hashed, $user_id);
         if($upd->execute()){
-            // حذف أي رموز استعادة موجودة
             $del = $conn->prepare("DELETE FROM password_resets WHERE user_id = ?");
             $del->bind_param("i", $user_id);
             $del->execute();
             $del->close();
 
-            // تنظيف الجلسة
             unset($_SESSION['reset_user_id'], $_SESSION['reset_sent_time'], $_SESSION['otp_verified']);
             $message = "<div class='alert alert-success'>تم تغيير كلمة المرور بنجاح. يمكنك تسجيل الدخول الآن.</div>";
         } else {
@@ -86,7 +78,6 @@ if(isset($_SESSION['otp_verified']) && $_SERVER['REQUEST_METHOD'] === 'POST' && 
           <?= $message ?>
 
           <?php if(!isset($_SESSION['otp_verified'])): ?>
-          <!-- عرض حقل إدخال OTP فقط -->
           <form method="post">
               <div class="mb-3">
                 <label class="form-label">رمز التحقق (OTP)</label>
@@ -96,7 +87,6 @@ if(isset($_SESSION['otp_verified']) && $_SERVER['REQUEST_METHOD'] === 'POST' && 
           </form>
 
           <?php else: ?>
-          <!-- عرض حقل تغيير كلمة المرور -->
           <form method="post">
               <div class="mb-3">
                 <label class="form-label">كلمة المرور الجديدة</label>

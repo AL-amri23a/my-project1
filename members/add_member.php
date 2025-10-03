@@ -10,13 +10,11 @@ if(!isset($_SESSION['email'])){
 $role = $_SESSION['role'] ?? "user";
 $message = "";
 
-// إعداد اللغة
 if (!isset($_SESSION['lang'])) $_SESSION['lang'] = 'ar';
 if (isset($_GET['lang'])) $_SESSION['lang'] = $_GET['lang'] === 'en' ? 'en' : 'ar';
 $lang = $_SESSION['lang'];
 $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 
-// الترجمات
 $texts = [
     'ar' => [
         'title' => 'إضافة عضو جديد',
@@ -66,7 +64,6 @@ $texts = [
     ]
 ];
 
-// إضافة عضو
 if(isset($_POST['addMember'])){
     $firstName = trim($_POST['firstName']);
     $lastName = trim($_POST['lastName']);
@@ -107,7 +104,6 @@ if(isset($_POST['addMember'])){
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
   <div class="container">
     <a class="navbar-brand" href="homepage.php"><?= $texts[$lang]['brand'] ?></a>
@@ -142,8 +138,6 @@ if(isset($_POST['addMember'])){
     </div>
   </div>
 </nav>
-
-<!-- Form -->
 <div class="container">
     <h2 class="text-center mb-4"><?= $texts[$lang]['title'] ?></h2>
     <?php if($message) echo $message; ?>

@@ -66,7 +66,6 @@ $texts = [
 $error = '';
 $success = '';
 
-// ===== تسجيل الدخول =====
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signIn'])) {
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
@@ -137,7 +136,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['requestOTP'])) {
     }
 }
 
-// ===== تحقق OTP =====
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verifyOTP'])) {
     $otp_input = trim($_POST['otp']);
     if (isset($_SESSION['otp']) && isset($_SESSION['otp_expire'])) {
@@ -155,7 +153,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verifyOTP'])) {
     }
 }
 
-// ===== إعادة تعيين كلمة المرور =====
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['resetPassword'])) {
     $newPassword = trim($_POST['newPassword']);
     $email = $_SESSION['otp_email'] ?? null;
@@ -200,8 +197,6 @@ a { text-decoration: none; } a:hover { text-decoration: underline; }
 </div>
 <div class="row justify-content-center">
 <div class="col-md-5">
-
-<!-- تسجيل الدخول -->
 <div class="card shadow-sm mb-3 login-card" <?php if(isset($_POST['requestOTP'])||isset($_POST['verifyOTP'])||isset($_POST['resetPassword'])) echo 'style="display:none;"'; ?>>
   <div class="card-header"><?= $texts[$lang]['login'] ?></div>
   <div class="card-body">
@@ -221,15 +216,11 @@ a { text-decoration: none; } a:hover { text-decoration: underline; }
     <div class="text-center"><a href="#" id="showResetForm"><?= $texts[$lang]['forgot'] ?></a></div>
   </div>
 </div>
-
-<!-- إعادة تعيين كلمة المرور -->
 <div class="card shadow-sm" id="resetForm" style="display:<?php echo (isset($_POST['requestOTP'])||isset($_POST['verifyOTP'])||isset($_POST['resetPassword']))?'block':'none'; ?>">
   <div class="card-header"><?= $texts[$lang]['reset'] ?></div>
   <div class="card-body">
     <?php if(!empty($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
     <?php if(!empty($success)) echo "<div class='alert alert-success'>$success</div>"; ?>
-
-    <!-- المرحلة 1: البريد -->
     <?php if(!isset($_SESSION['otp_sent'])): ?>
     <form method="POST">
       <div class="mb-3">
@@ -239,8 +230,6 @@ a { text-decoration: none; } a:hover { text-decoration: underline; }
       <button type="submit" name="requestOTP" class="btn btn-primary w-100"><?= $texts[$lang]['send'] ?></button>
     </form>
     <?php endif; ?>
-
-    <!-- المرحلة 2: OTP -->
     <?php if(isset($_SESSION['otp_sent']) && !isset($_SESSION['otp_verified'])): ?>
     <form method="POST">
       <div class="mb-3">
@@ -259,7 +248,6 @@ a { text-decoration: none; } a:hover { text-decoration: underline; }
     <?php endif; ?>
     <?php endif; ?>
 
-    <!-- المرحلة 3: كلمة المرور الجديدة -->
     <?php if(isset($_SESSION['otp_verified']) && $_SESSION['otp_verified'] === true): ?>
     <form method="POST">
       <div class="mb-3">

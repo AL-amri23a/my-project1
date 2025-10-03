@@ -62,8 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </select>
         </div>
 
-        <button type="submit" class="btn btn-success">💾 حفظ</button>
-        <a href="attendance.php" class="btn btn-secondary">⬅️ رجوع</a>
+        <button type="submit" class="btn btn-success"> حفظ</button>
+        <a href="attendance.php" class="btn btn-secondary"> رجوع</a>
     </form>
 </div>
 

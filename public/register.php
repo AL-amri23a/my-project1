@@ -11,12 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['register'])) {
     $username  = trim($_POST['username']);
     $email     = trim($_POST['email']);
     $password  = trim($_POST['password']);
-    $role      = "user"; // افتراضي مستخدم عادي
+    $role      = "user"; 
 
     if (empty($firstName) || empty($lastName) || empty($username) || empty($email) || empty($password)) {
         $error = "الرجاء ملء جميع الحقول.";
     } else {
-        // التحقق إذا البريد موجود
         $check = $conn->prepare("SELECT id FROM users WHERE email=? LIMIT 1");
         $check->bind_param("s", $email);
         $check->execute();
@@ -25,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['register'])) {
         if ($check->num_rows > 0) {
             $error = "هذا البريد مسجل مسبقاً.";
         } else {
-            // تشفير كلمة المرور
+        
             $hashed = password_hash($password, PASSWORD_DEFAULT);
 
             $stmt = $conn->prepare("INSERT INTO users (FirstName, lastName, username, email, password, role) VALUES (?, ?, ?, ?, ?, ?)");

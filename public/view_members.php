@@ -2,7 +2,6 @@
 session_start();
 include("../config/connect.php");
 
-// ===== إعداد اللغة =====
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'ar';
 }
@@ -11,7 +10,6 @@ if (isset($_GET['lang'])) {
 }
 $lang = $_SESSION['lang'];
 
-// الترجمات
 $texts = [
     'ar' => [
         'title' => 'قائمة الأعضاء',
@@ -29,7 +27,6 @@ $texts = [
     ]
 ];
 
-// ===== حذف العضو =====
 if(isset($_GET['delete'])){
     $id = intval($_GET['delete']);
     $conn->query("DELETE FROM memberships WHERE user_id=$id");

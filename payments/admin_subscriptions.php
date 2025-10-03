@@ -2,7 +2,6 @@
 session_start();
 include("../config/connect.php");
 
-// التحقق من صلاحية المدير
 if(!isset($_SESSION['email']) || $_SESSION['role'] !== 'admin'){
     header("Location: ../public/index.php");
     exit();
@@ -11,7 +10,6 @@ if(!isset($_SESSION['email']) || $_SESSION['role'] !== 'admin'){
 $lang = $_SESSION['lang'] ?? 'ar';
 $dir = $lang==='ar'?'rtl':'ltr';
 
-// جلب جميع الاشتراكات مع بيانات المستخدم
 $query = "SELECT s.id, u.firstName, u.email, s.offer_title, s.price, s.subscription_date 
           FROM subscriptions s 
           JOIN users u ON s.user_id = u.id

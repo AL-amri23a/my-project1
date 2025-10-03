@@ -2,7 +2,6 @@
 session_start();
 include("../config/connect.php"); 
 
-// ===== إعداد اللغة =====
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'ar';
 }
@@ -11,7 +10,6 @@ if (isset($_GET['lang'])) {
 }
 $lang = $_SESSION['lang'];
 
-// ===== الترجمات =====
 $texts = [
     'ar' => [
         'title' => 'تقارير الأعضاء',
@@ -41,7 +39,6 @@ $texts = [
     ]
 ];
 
-// ===== بيانات الأعضاء =====
 $total_members = $conn->query("SELECT COUNT(*) FROM users")->fetch_row()[0];
 $admin_count   = $conn->query("SELECT COUNT(*) FROM users WHERE role='admin'")->fetch_row()[0];
 $user_count    = $conn->query("SELECT COUNT(*) FROM users WHERE role='user'")->fetch_row()[0];
@@ -69,7 +66,7 @@ a.btn { margin-top:15px; }
 
 <div class="container mt-4">
 
-    <!-- الشريط العلوي -->
+   
     <div class="top-bar">
         <div class="lang-buttons">
             <a href="?lang=ar" class="btn btn-sm btn-outline-dark">العربية</a>

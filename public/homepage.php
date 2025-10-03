@@ -7,13 +7,11 @@ if (!isset($_SESSION['email'])) {
     exit();
 }
 
-// إدارة اللغة
 if (!isset($_SESSION['lang'])) $_SESSION['lang'] = 'ar';
 if (isset($_GET['lang'])) $_SESSION['lang'] = $_GET['lang'] === 'en' ? 'en' : 'ar';
 $lang = $_SESSION['lang'];
 $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 
-// النصوص
 $texts = [
     'ar' => [
         'title' =>'الرئيسية',
@@ -75,7 +73,6 @@ $texts = [
     ]
 ];
 
-// جلب الاشتراكات فقط للـ Admin
 $subscriptions = [];
 if ($_SESSION['role'] === 'admin') {
     $stmt = $conn->prepare("SELECT u.firstName, u.email, s.offer_title, s.price, s.subscription_date FROM subscriptions s JOIN users u ON s.user_id=u.id ORDER BY subscription_date DESC");
@@ -138,7 +135,6 @@ body {
 
 <div class="container mt-3">
 
-  <!-- Carousel الصور -->
   <div id="mainCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active"><img src="../image/adcc-football-academy10.jpg" class="d-block w-100" alt="Image 1"></div>

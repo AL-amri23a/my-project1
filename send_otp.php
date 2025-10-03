@@ -1,10 +1,10 @@
 <?php
 session_start();
-include("../config/connect.php"); // ملف الاتصال بقاعدة البيانات
+include("../config/connect.php"); 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../vendor/autoload.php'; // PHPMailer
+require '../vendor/autoload.php'; 
 
 $error = '';
 $success = '';
@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forgotPassword'])) {
     if (empty($email)) {
         $error = "⚠️ الرجاء إدخال البريد الإلكتروني.";
     } else {
-        // تحقق إذا البريد موجود في users
         $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? LIMIT 1");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -24,25 +23,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forgotPassword'])) {
         if ($result->num_rows === 0) {
             $error = "❌ البريد غير مسجل.";
         } else {
-            // توليد OTP وحفظه
+         
             $otp = rand(100000, 999999);
-            $expiry = date("Y-m-d H:i:s", time() + 300); // 5 دقائق
+            $expiry = date("Y-m-d H:i:s", time() + 300); 
 
             $stmt2 = $conn->prepare("INSERT INTO password_resets (email, otp_code, expiry) VALUES (?, ?, ?)");
             $stmt2->bind_param("sss", $email, $otp, $expiry);
             $stmt2->execute();
-
-            // حفظ الإيميل في السيشن
             $_SESSION['reset_email'] = $email;
 
-            // إرسال البريد
             $mail = new PHPMailer(true);
             try {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'yourgmail@gmail.com'; // بريدك
-                $mail->Password = 'your_app_password';   // App Password
+                $mail->Username = 'yourgmail@gmail.com'; 
+                $mail->Password = 'your_app_password';   
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
@@ -56,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['forgotPassword'])) {
                 header("Location: verify_otp.php");
                 exit();
             } catch (Exception $e) {
-                $error = "❌ فشل الإرسال: {$mail->ErrorInfo}";
+                $error = " فشل الإرسال: {$mail->ErrorInfo}";
             }
         }
     }
